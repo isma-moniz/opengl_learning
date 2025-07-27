@@ -14,5 +14,6 @@ target_include_directories(opengl_learn PRIVATE
 
 target_link_libraries(opengl_learn
     glfw
+    m
     dl
 )

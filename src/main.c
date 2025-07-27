@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -9,13 +9,14 @@ const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
-    "gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "gl_Position = vec4(aPos, 1.0);\n"
     "}\0";
 const char* fragmentShaderSource1 = "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "uniform vec4 ourColor;\n"
     "void main()\n"
     "{\n"
-    "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "FragColor = ourColor;\n"
     "}\0";
 const char* fragmentShaderSource2 = "#version 330 core\n"
     "out vec4 FragColor;\n"
@@ -169,7 +170,11 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw triangle
-        glUseProgram(shaderProgram2);
+        float timeValue = glfwGetTime();
+        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram1, "ourColor");
+        glUseProgram(shaderProgram1);
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(VAO);
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
